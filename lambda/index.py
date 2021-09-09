@@ -52,7 +52,7 @@ def handler(event, context):
     #         "lambda_service_exists": False,
     #     }
     # }
-    project_settings = json.loads(event["body"]["data"])
+    project_settings = json.loads(event["body"])["data"]
 
 
     with tempfile.TemporaryDirectory() as tmpdirname:
