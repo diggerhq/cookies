@@ -1,13 +1,31 @@
-<script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" />
+  <div class="container">
+      <div id="app">
+        <img alt="Vue logo" src="./assets/logo.png" width="128">
+        <h1>Cookies</h1>
+        <p>
+          It's like <a href="https://create-react-app.dev/" >create-react-app</a> but for your terraform
+        </p>
+
+      </div>
+        <Main/>
+        <hr>
+        <Footer/>
+  </div>
 </template>
+
+<script>
+import Main from './components/Main.vue'
+import Footer from './components/Footer.vue'
+
+export default {
+  name: 'App',
+  components: {
+    Main,
+    Footer
+  }
+}
+</script>
 
 <style>
 #app {
