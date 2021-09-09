@@ -1,0 +1,8 @@
+FROM public.ecr.aws/lambda/python:3.8
+RUN yum install -y git
+COPY lambda lambda/
+COPY lib lib/
+RUN cd lib && pip install . && cd ..
+RUN pip install -r lambda/requirements.txt
+# The following will be overriden during every release
+CMD ["lambda.index.handler"]                      

@@ -8,7 +8,7 @@
         id="project-name"
         class="mb-2 mr-sm-2 mb-sm-0"
         placeholder="myproject"
-        v-model="formData.project_name"
+        v-model="formData.app_name"
       ></b-form-input>
 
       <label class="sr-only" for="environment-name">Environment Name</label>
@@ -16,7 +16,7 @@
         id="environment-name"
         class="mb-2 mr-sm-2 mb-sm-0"
         placeholder="Jane Doe"
-        v-model="formData.environment_name"
+        v-model="formData.environment"
       ></b-form-input>
 
       <b-form-select id="region" v-model="formData.region" :options="awsRegions"></b-form-select>
@@ -65,7 +65,7 @@
   <hr>
 
   <b-button variant="primary" v-on:click="signup"><i class="fa fa-github"></i>Signup to download</b-button>
-  <b-button variant="primary" :disabled="downloadTerraformEnabled() ? false : true">Downlaod My Terraform!</b-button>
+  <b-button variant="success" v-on:click="generateTerraform" :disabled="downloadTerraformEnabled() ? false : true">Download My Terraform!</b-button>
 
 
   </div>
@@ -73,6 +73,8 @@
 </template>
 
 <script>
+import axios from "axios"
+
 export default {
   name: 'Main',
   data () {
@@ -105,8 +107,8 @@ export default {
         // "us-gov-west-1": "",        
       },
       formData: {
-        "project_name": "myproj",
-        "environment_name": "production",
+        "app_name": "myproj",
+        "environment": "production",
         "region": "us-east-1",
         "services": [
           {
@@ -119,7 +121,8 @@ export default {
             // "task_memory": "1024",
             // "internal": False,
           }
-        ]
+        ],
+        "environment_config": {}
       }
     }
   },
@@ -147,6 +150,26 @@ export default {
     },
     downloadTerraformEnabled() {
       return localStorage.getItem("authToken") !== null 
+    },
+    generateTerraform() {
+      var formData = {...this.formData}
+      formData = {
+        "app_name": formData["app_name"],
+        "environment": formData["environment"],
+        "region": formData["region"],
+        "services": {},
+        "environment_config": formData["environment_config"]
+      }
+      for (var i=0; i<formData.services.length; i++) {
+        formData["services"][formData.services[i].service_name] = formData.services[i]
+      }
+
+      axios.get(process.env.VUE_APP_COOKIES_BACKEND, {data: formData})
+        .then((res) => {
+          console.log(res)
+          console.log(res.data)
+          console.log(res.data.url)
+        })
     }
   }
 }
