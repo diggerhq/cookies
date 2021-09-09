@@ -1,4 +1,5 @@
 import os, sys
+import json
 import boto3
 import tempfile
 import zipfile
@@ -51,7 +52,7 @@ def handler(event, context):
     #         "lambda_service_exists": False,
     #     }
     # }
-    project_settings = event["body"]["data"]
+    project_settings = json.loads(event["body"]["data"])
 
 
     with tempfile.TemporaryDirectory() as tmpdirname:
