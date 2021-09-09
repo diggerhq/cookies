@@ -51,7 +51,7 @@ def handler(event, context):
     #         "lambda_service_exists": False,
     #     }
     # }
-    project_settings = event["data"]
+    project_settings = event["body"]["data"]
 
 
     with tempfile.TemporaryDirectory() as tmpdirname:
@@ -90,4 +90,4 @@ def handler(event, context):
                     },
                 ExpiresIn=3600)
 
-        return {"url": url}
+    return {"url": url}
