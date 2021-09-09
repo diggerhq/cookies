@@ -164,7 +164,7 @@ export default {
         formData["services"][formData.services[i].service_name] = formData.services[i]
       }
 
-      axios.get(process.env.VUE_APP_COOKIES_BACKEND, {data: formData})
+      axios.post(process.env.VUE_APP_COOKIES_BACKEND, {data: formData})
         .then((res) => {
           console.log(res)
           console.log(res.data)
