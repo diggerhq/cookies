@@ -17,9 +17,10 @@ def zipdir(path, ziph):
 
 def handler(event, context):
 
+    print(event)
     if event['requestContext']['http']['method'] == "OPTIONS":
         return {}
-        
+
     AWS_KEY=os.environ["AWS_KEY"]
     AWS_SECRET=os.environ["AWS_SECRET"]
     target_bucket_name=os.environ["BUCKET_NAME"]
