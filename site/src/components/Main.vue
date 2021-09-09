@@ -23,7 +23,7 @@
 
       <h3>Services</h3>
       <div v-for="service in formData.services" v-bind:key="service.name">
-        
+
         <label class="sr-only" for="service-name">Service Name</label>
         <b-form-input
           id="service-name"
@@ -64,8 +64,8 @@
 
   <hr>
 
-  <b-button variant="primary"><i class="fa fa-github"></i>Signup to download</b-button>
-  <b-button variant="primary" disabled>Downlaod My Terraform!</b-button>
+  <b-button variant="primary" v-on:click="signup"><i class="fa fa-github"></i>Signup to download</b-button>
+  <b-button variant="primary" :disabled="downloadTerraformEnabled() ? false : true">Downlaod My Terraform!</b-button>
 
 
   </div>
@@ -124,6 +124,11 @@ export default {
     }
   },
   methods: {
+    signup() {
+      const redir = `${process.env.VUE_APP_DIGGER_BACKEND}/login/github/?redirect_uri=${window.location.href}`
+      console.log(redir)
+      window.location = redir
+    },
     addService() {
       this.formData.services.push({
         "service_type": "container",
@@ -139,6 +144,9 @@ export default {
           services.splice(i, 1)
         }
       }
+    },
+    downloadTerraformEnabled() {
+      return localStorage.getItem("authToken") !== null 
     }
   }
 }

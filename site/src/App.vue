@@ -23,6 +23,16 @@ export default {
   components: {
     Main,
     Footer
+  },
+  mounted() {
+    let url = new URL(window.location.href);
+    const token = url.searchParams.get("token");
+    // const cliCallback = url.searchParams.get("cli_callback");
+    if (token) {
+      localStorage.setItem("authToken", token);
+      url.searchParams.delete("token");
+      window.location.replace(url.href);
+    }    
   }
 }
 </script>
