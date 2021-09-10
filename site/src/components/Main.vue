@@ -1,7 +1,6 @@
 <template>
   <div class="hello">
 
-
     <b-form>
       <label class="sr-only" for="project-name">Project Name</label>
       <b-form-input
@@ -19,6 +18,7 @@
         v-model="formData.environment"
       ></b-form-input>
 
+      <label class="sr-only" for="region" style="margin-top: 10px;">Region</label><br>
       <b-form-select id="region" v-model="formData.region" :options="awsRegions"></b-form-select>
 
       <h3>Services</h3>
@@ -32,10 +32,11 @@
           v-model="service.service_name"
         ></b-form-input>
 
-        <label class="sr-only" for="service-type">ServiceType</label>
+        <label class="sr-only" for="service-type" style="margin-top: 10px;">ServiceType</label><br>
         <b-form-select id="service-type" v-model="service.service_type" :options="serviceTypes"></b-form-select>
 
-        <label class="sr-only" for="health-check">Health Check</label>
+        <br>
+        <label class="sr-only" for="health-check" style="margin-top: 10px;">Health Check</label>
         <b-form-input
           id="health-check"
           class="mb-2 mr-sm-2 mb-sm-0"
@@ -51,11 +52,11 @@
           placeholder="8080"
           v-model="service.container_port"
         ></b-form-input>
-        <b-button variant="danger" v-on:click="deleteService(service.service_name)" >delete (-)</b-button>
+        <b-button variant="danger" v-on:click="deleteService(service.service_name)" style="margin-top: 5px;">delete (-)</b-button>
 
       </div>
     
-      <b-button variant="primary" v-on:click="addService">Add (+)</b-button>
+      <b-button variant="primary" v-on:click="addService" style="margin-top: 20px;">Add another service(+)</b-button>
     
     
       <!-- <h3>Resources</h3> -->
@@ -64,8 +65,9 @@
 
   <hr>
 
-  <b-button variant="primary" v-on:click="signup"><i class="fa fa-github"></i>Signup to download</b-button>
-  <b-button variant="success" v-on:click="generateTerraform" :disabled="downloadTerraformEnabled() ? false : true">Download My Terraform!</b-button>
+  <b-button variant="primary" v-on:click="signup">
+    Sign Up To Download</b-button>
+  <b-button variant="success" v-on:click="generateTerraform" :disabled="downloadTerraformEnabled() ? false : true" style="margin-left: 5px">Download My Terraform!</b-button>
 
 
   </div>
