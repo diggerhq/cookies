@@ -164,11 +164,12 @@ export default {
         formData["services"][formData.services[i].service_name] = formData.services[i]
       }
 
-      axios.post(process.env.VUE_APP_COOKIES_BACKEND, {data: formData})
+      axios.post(process.env.VUE_APP_COOKIES_BACKEND + "/terraform", {data: formData})
         .then((res) => {
           console.log(res)
           console.log(res.data)
           console.log(res.data.url)
+          window.location.href = res.data.url
         })
     }
   }

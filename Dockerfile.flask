@@ -1,0 +1,8 @@
+FROM tiangolo/uwsgi-nginx-flask:python3.9
+
+RUN apt install -y git
+COPY ./lambda /app
+COPY lib lib/
+RUN cd lib && pip install . && cd ..
+RUN pip install -r /app/requirements.txt
+# The following will be overriden during every release
