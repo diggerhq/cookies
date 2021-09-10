@@ -36,6 +36,7 @@
         <b-form-select id="service-type" v-model="service.service_type" :options="serviceTypes"></b-form-select>
 
         <br>
+        <div v-if="service.service_type === 'container'">
         <label class="sr-only" for="health-check" style="margin-top: 10px;">Health Check</label>
         <b-form-input
           id="health-check"
@@ -43,8 +44,9 @@
           placeholder="/health"
           v-model="service.health_check"
         ></b-form-input>
+        </div>
 
-
+        <div v-if="service.service_type === 'container'">
         <label class="sr-only" for="inline-form-input-name">Container Port</label>
         <b-form-input
           id="inline-form-input-name"
@@ -53,6 +55,7 @@
           v-model="service.container_port"
         ></b-form-input>
         <b-button variant="danger" v-on:click="deleteService(service.service_name)" style="margin-top: 5px;">delete (-)</b-button>
+        </div>
 
       </div>
     
@@ -67,7 +70,7 @@
 
   <b-button variant="primary" v-on:click="signup">
     Sign Up To Download</b-button>
-  <b-button variant="success" v-on:click="generateTerraform" :disabled="downloadTerraformEnabled() ? false : true" style="margin-left: 5px">Download My Terraform!</b-button>
+  <b-button variant="success" v-on:click="generateTerraform" :disabled="terraformDisabled" style="margin-left: 5px">Download My Terraform!</b-button>
 
 
   </div>
@@ -81,6 +84,7 @@ export default {
   name: 'Main',
   data () {
     return {
+      terraformDisabled: true,
       serviceTypes: ["container", "webapp", "serverless"],
       awsRegions: {
         "us-east-1": "N. Virginia (us-east-1)",
@@ -124,15 +128,21 @@ export default {
             // "internal": False,
           }
         ],
-        "environment_config": {}
+        "environment_config": {
+            "needs_database": false
+        }
       }
     }
+  },
+  mounted() {
+    this.terraformDisabled = localStorage.getItem("authToken") === null
   },
   methods: {
     signup() {
       const redir = `${process.env.VUE_APP_DIGGER_BACKEND}/login/github/?redirect_uri=${window.location.href}`
       console.log(redir)
-      window.location = redir
+      window.open(redir)
+      this.terraformDisabled = false
     },
     addService() {
       this.formData.services.push({
@@ -162,6 +172,14 @@ export default {
         "services": {},
         "environment_config": formData["environment_config"]
       }
+
+      formData["environment_config"]["fargate_service_exists"] = this.formData.services.filter((x) => x.service_type === "container").length > 0
+      formData["environment_config"]["eks_service_exists"] = false
+      formData["environment_config"]["cloudfront_service_exists"] = this.formData.services.filter((x) => x.service_type === "webapp").length > 0
+      formData["environment_config"]["lambda_service_exists"] = this.formData.services.filter((x) => x.service_type === "serverless").length > 0
+
+      // "cloudfront_service_exists": false,
+      // "lambda_service_exists": false
       for (var i=0; i<formData.services.length; i++) {
         formData["services"][formData.services[i].service_name] = formData.services[i]
       }

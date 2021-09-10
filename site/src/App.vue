@@ -37,7 +37,7 @@ export default {
     if (token) {
       localStorage.setItem("authToken", token);
       url.searchParams.delete("token");
-      window.location.replace(url.href);
+      window.close()
     }    
   }
 }
